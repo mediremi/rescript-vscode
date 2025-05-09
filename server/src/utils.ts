@@ -739,6 +739,15 @@ let findPlatformPath = (projectRootPath: p.DocumentUri | null) => {
 
   let platformPath = path.join(rescriptDir, c.platformDir);
 
+  // Binaries have moved in v12
+  if (!fs.existsSync(platformPath)) {
+    platformPath = path.join(
+      rescriptDir,
+      "..",
+      `@rescript/${process.platform}-${process.arch}/bin`
+    )
+  }
+
   // Workaround for darwinarm64 which has no folder yet in ReScript <= 9.1.4
   if (
     process.platform == "darwin" &&
